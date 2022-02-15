@@ -1,4 +1,4 @@
-import { Genre } from "../interfaces/movies";
+import { Genre } from "../src/types/Genre";
 
 export const genresMock: Genre[] = [
   {

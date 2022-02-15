@@ -10,8 +10,9 @@ import {
 import { Box } from "@mui/system";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { createStyles, makeStyles } from "@mui/styles";
-import { genresMock, moviesMock } from "../../fake-api/movie";
-import { Genre, Movie } from "../../interfaces/movies";
+import axios from "axios";
+import { Movie } from "../../types/Movie";
+import { Genre } from "../../types/Genre";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,16 +30,11 @@ export const Movies = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const genresPromise = Promise.resolve(genresMock);
-      const moviesPromise = Promise.resolve(moviesMock);
-
-      const [genres, movies] = await Promise.all([
-        genresPromise,
-        moviesPromise,
-      ]);
-
+      const { data: movies } = await axios.get<Movie[]>(
+        "http://localhost:4000/api/movies"
+      );
       setMovies(movies);
-      setGenres([{ title: "All Genres", id: "all", icon: {} }, ...genres]);
+      // setGenres([{ title: "All Genres", id: "all", icon: {} }, ...genres]);
     };
 
     getData();
@@ -53,7 +49,7 @@ export const Movies = () => {
       <List>
         {genres.map((genre) => (
           <ListItem key={genre.id} disablePadding>
-            <ListItemButton onClick={() => handleGenreSelect(genre.id)}>
+            <ListItemButton onClick={() => handleGenreSelect("")}>
               <ListItemIcon>
                 {/* TODO icon */}
                 <InboxIcon />
