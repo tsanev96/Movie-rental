@@ -6,6 +6,13 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import InboxIcon from "@mui/icons-material/Inbox";
@@ -13,6 +20,7 @@ import { createStyles, makeStyles } from "@mui/styles";
 import axios from "axios";
 import { Movie } from "../../types/Movie";
 import { Genre } from "../../types/Genre";
+import _ from "lodash";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -20,6 +28,18 @@ const useStyles = makeStyles(() =>
     rightSide: {},
   })
 );
+
+enum Paths {
+  Title = "title",
+  Genre = "genre.title",
+  stock = "stock",
+  dailyRentalRate = "dailyRentalRate",
+}
+
+type Column = {
+  path: Paths;
+  name: string;
+};
 
 export const Movies = () => {
   const classes = useStyles();
@@ -62,6 +82,19 @@ export const Movies = () => {
     );
   };
 
+  const getCellValue = (path: Paths, movie: Movie) => {
+    const value = _.get(movie, path);
+    console.log(value);
+    return value ? value : "";
+  };
+
+  const columns: Column[] = [
+    { path: Paths.Title, name: "Title" },
+    { path: Paths.Genre, name: "Genre" },
+    { path: Paths.stock, name: "Stock" },
+    { path: Paths.dailyRentalRate, name: "Daily Rate" },
+  ];
+
   return (
     <Box>
       <Grid container>
@@ -69,7 +102,34 @@ export const Movies = () => {
           {renderSideBar()}
         </Grid>
         <Grid item xs={11}>
-          movie table
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    {columns.map(({ path, name }) => (
+                      <TableCell key={path}>{name}</TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {movies.map((movie) => {
+                    return (
+                      <TableRow key={movie.title}>
+                        {columns.map(({ path }) => {
+                          return (
+                            <TableCell key={path}>
+                              {getCellValue(path, movie)}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </Grid>
       </Grid>
     </Box>
