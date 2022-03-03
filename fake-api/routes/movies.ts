@@ -8,6 +8,7 @@ router.get("/movies", async (req, res) => {
     {
       title: "Terminator",
       genre: {
+        id: "action",
         title: "Action",
       },
       dailyRentalRate: 3,
@@ -16,15 +17,17 @@ router.get("/movies", async (req, res) => {
     {
       title: "SpiderMan 2",
       genre: {
+        id: "action",
         title: "Action",
       },
       dailyRentalRate: 4,
       stock: 344,
     },
     {
-      title: "Limitless",
+      title: "SAW",
       genre: {
-        title: "Action",
+        id: "horror",
+        title: "Horror",
       },
       dailyRentalRate: 2,
       stock: 600,
@@ -32,6 +35,7 @@ router.get("/movies", async (req, res) => {
     {
       title: "Vikings",
       genre: {
+        id: "action",
         title: "Action",
       },
       dailyRentalRate: 3,
