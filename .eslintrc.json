@@ -14,7 +14,9 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "semi": ["warning", "always"],
-    "quotes": ["error", "double"]
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "implicit-arrow-linebreak": ["error", "beside"],
+    "linebreak-style": ["warn", "windows"]
   }
 }
