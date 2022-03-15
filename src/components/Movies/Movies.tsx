@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   List,
@@ -11,12 +11,12 @@ import {
 import { Box } from "@mui/system";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { createStyles, makeStyles } from "@mui/styles";
-import axios from "axios";
 import { Movie } from "../../types/Movie";
 import { Genre } from "../../types/Genre";
 import _ from "lodash";
 import { Column } from "../../types/Column";
 import Table from "../shared/Table/Table";
+import { useFetchHTTP } from "../../hooks/useFetchHTTP";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -36,23 +36,21 @@ export const Movies = () => {
   const classes = useStyles();
 
   const [currentGenre, selectCurrentGenre] = useState("all");
-  const [movies, setMovies] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
 
-  useEffect(() => {
-    const getData = async () => {
-      const { data: movies } = await axios.get<Movie[]>(
-        "http://localhost:4000/api/movies"
-      );
-      const { data: genres } = await axios.get<Genre[]>(
-        "http://localhost:4000/api/genres"
-      );
-      setMovies(movies);
-      setGenres([{ title: "All Genres", id: "all", icon: {} }, ...genres]);
-    };
+  const movies = useFetchHTTP<Movie[]>("movies", []);
+  const fetchedGenres = useFetchHTTP<Genre[]>("genres", []);
 
-    getData();
+  useEffect(() => {
+    setGenres([
+      { title: "All Genres", id: "all", icon: {} },
+      ...fetchedGenres.data,
+    ]);
   }, []);
+
+  if (movies.isLoading || fetchedGenres.isLoading) {
+    return <div>loader</div>;
+  }
 
   const handleGenreSelect = (genreId: string) => {
     selectCurrentGenre(genreId);
@@ -79,11 +77,6 @@ export const Movies = () => {
     );
   };
 
-  const getCellValue = (path: Paths, movie: Movie) => {
-    const value = _.get(movie, path);
-    return value ? value : "";
-  };
-
   const columns: Column[] = [
     { path: Paths.Title, name: "Title" },
     { path: Paths.Genre, name: "Genre" },
@@ -99,7 +92,7 @@ export const Movies = () => {
         </Grid>
         <Grid item xs={11}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <Table data={movies} columns={columns} />
+            <Table data={movies.data} columns={columns} />
           </Paper>
         </Grid>
       </Grid>
