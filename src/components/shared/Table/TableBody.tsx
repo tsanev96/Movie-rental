@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { TableBody as TableBodyMui, TableCell, TableRow } from "@mui/material";
 import { Column } from "../../../types/Column";
+import { useState } from "react";
+import Pagination from "../Pagination/Pagination";
 
 interface Props<T> {
   data: T[];
@@ -14,17 +16,19 @@ const TableBody = <T extends object>({ data, columns }: Props<T>) => {
   };
 
   return (
-    <TableBodyMui>
-      {data.map((el) => {
-        return (
-          <TableRow>
-            {columns.map(({ path }) => (
-              <TableCell key={path}>{getCellValue(path, el)}</TableCell>
-            ))}
-          </TableRow>
-        );
-      })}
-    </TableBodyMui>
+    <>
+      <TableBodyMui>
+        {data.map((el) => {
+          return (
+            <TableRow>
+              {columns.map(({ path }) => (
+                <TableCell key={path}>{getCellValue(path, el)}</TableCell>
+              ))}
+            </TableRow>
+          );
+        })}
+      </TableBodyMui>
+    </>
   );
 };
 
