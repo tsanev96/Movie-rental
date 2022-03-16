@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { TableBody as TableBodyMui, TableCell, TableRow } from "@mui/material";
 import { Column } from "../../../types/Column";
+import { useState } from "react";
+import Pagination from "../Pagination/Pagination";
 
 interface Props<T> {
   data: T[];

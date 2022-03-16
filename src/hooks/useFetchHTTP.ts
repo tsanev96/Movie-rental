@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import http from "../utils/http";
+import http from "../network/http";
 
 export const useFetchHTTP = <T>(query: string, initialData: T) => {
   const [data, setData] = useState<T>(initialData);

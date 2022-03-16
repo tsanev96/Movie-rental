@@ -46,7 +46,7 @@ export const Movies = () => {
       { title: "All Genres", id: "all", icon: {} },
       ...fetchedGenres.data,
     ]);
-  }, []);
+  }, [fetchedGenres.data]);
 
   if (movies.isLoading || fetchedGenres.isLoading) {
     return <div>loader</div>;
@@ -92,7 +92,7 @@ export const Movies = () => {
         </Grid>
         <Grid item xs={11}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <Table data={movies.data} columns={columns} />
+            <Table data={movies.data} columns={columns} rowsPerPage={5} />
           </Paper>
         </Grid>
       </Grid>
