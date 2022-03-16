@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { makeStyles, createStyles } from "@mui/styles";
 import { NavLink } from "react-router-dom";
-
-const pages = ["movies", "customers", "rentals", "register", "login"];
+import { URL } from "../../constants/url";
+import { useFetchHTTP } from "../../hooks/useFetchHTTP";
+import { NavLink as NavLinkType } from "../../types/NavLink";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Header = () => {
   const classes = useStyles();
 
+  const { data, isLoading } = useFetchHTTP<NavLinkType[]>(URL.nav, []);
+
+  if (isLoading) {
+    return <Box>Loading</Box>;
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -48,9 +55,9 @@ export const Header = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLink className={classes.link} key={page} to={`/${page}`}>
-                {page}
+            {data.map(({ name, path }) => (
+              <NavLink className={classes.link} key={path} to={path}>
+                {name}
               </NavLink>
             ))}
           </Box>
