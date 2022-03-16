@@ -16,19 +16,17 @@ const TableBody = <T extends object>({ data, columns }: Props<T>) => {
   };
 
   return (
-    <>
-      <TableBodyMui>
-        {data.map((el) => {
-          return (
-            <TableRow>
-              {columns.map(({ path }) => (
-                <TableCell key={path}>{getCellValue(path, el)}</TableCell>
-              ))}
-            </TableRow>
-          );
-        })}
-      </TableBodyMui>
-    </>
+    <TableBodyMui>
+      {data.map((el) => {
+        return (
+          <TableRow>
+            {columns.map(({ path }) => (
+              <TableCell key={path}>{getCellValue(path, el)}</TableCell>
+            ))}
+          </TableRow>
+        );
+      })}
+    </TableBodyMui>
   );
 };
 
